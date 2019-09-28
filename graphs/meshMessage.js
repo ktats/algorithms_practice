@@ -15,7 +15,7 @@ function bfsGetPath(graph, startNode, endNode) {
         graph[currentNode].forEach(neighbour => {
             if (!howWeReachedNodes.hasOwnProperty(neighbour)) {
                 howWeReachedNodes[neighbour] = current;
-                nodesToVisit.enqueue(neighbour);
+                nodesToVisit.enqueue(neighbour)
             }
         })
     }

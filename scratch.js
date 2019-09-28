@@ -262,3 +262,135 @@ function highestLowest(root) {
       }
   }
 }
+
+
+function breadthGraph(graph, startNode, endNode) {
+    // Breadth first search throug the graph
+    // Keep track of pathway for each node as you come across it 
+    let paths = {};
+    paths[startNode] = null;
+    let nextNode = new Queue();
+    nextNode.enqueue(startNode);
+    while (nextNode.length) {
+      current = nextNode.dequeue();
+      
+      if (current === endNode) {
+          return pathConstructor(graph, current);
+      }
+
+      graph[current].forEach(neighbour => {
+          if (!paths.hasOwnPropery(neighbour)) {
+              nextNode.enqueue(neighbour);
+              paths[neighbour] = current;
+          }
+      })
+    }
+
+    function pathConstructor(paths, endNode) {
+      let path = [];
+      let current = endNode;
+      while (current !== null) {
+          path.push(current);
+          current = paths[current];
+      }
+      return path.reverse();
+    }
+}
+
+function superbalanced(root) {
+    let depths = [];
+    let stack = [];
+    stack.push([root, 0]);
+    while (stack.length) {
+        let nodePair = stack.pop();
+        let node = nodePair[0];
+        let depth = nodePair[1];
+        // If this is a leaf, check its depth
+        // If its a new depth, add it to array. Make sure there is no more than 2 depths
+        // Also make sure the difference between two depths is not greater than 2
+        if (!node.left && !node.right) {
+          if (depths.indexOf(depth) < 1) {
+              depths.push(depth);
+              if ((depths.length > 2) || (depths.length === 2 && Math.abs(depths[0] - depths[1] > 2))) {
+                  return false;
+              }
+          }
+        }
+         
+        // Depth first traversal while keeping track of depth
+        if (node.left) {
+            stack.push([node.left, depth + 1])
+        }
+        if (node.right) {
+            stack.push([node.right, depth + 1])
+        }
+    }
+}
+
+function validBST(root) {
+    let stack = [];
+    stack.push({node: root, lowerBound: -100, upperBound: 100});
+    while (stack.length); {
+        let {node, lowerBound, upperBound } = stack.pop();
+        if (node.value <= lowerBound || node.value >= upperBound) {
+            return false;
+        }
+
+        if (node.left) {
+            stack.push({node: node.left, lowerBound, upperBound: node.value})
+        }
+        if (node.right) {
+            stack.push({node: node.right, lowerBound: node.value, upperBound});
+        }
+    }
+}
+
+function secondLargest(root) {
+    function largest(root) {
+        let node = root;
+        while (node) {
+            if (node.right) {
+                node = node.right
+            } else {
+                return node;
+            }
+        }
+    }
+
+    let node = root;
+    while (node) {
+        if (!node.right && node.left) {
+            return largest(node.left);
+        } else if (node.right && !node.right.right && !node.right.left) {
+            return node;
+        } else {
+            node = node.right;
+        }
+    }
+}
+
+
+function reverseLinkedList(head) {
+    let temp;
+    let node = head;
+    let prev = null;
+    while (node) {
+      temp = node.next;
+      node.next = prev;
+      prev = node;
+      node = temp;
+    }
+}
+
+function kthToLastNode(head, k) {
+    let runner = head;
+    for (let i = 0; i < k - 1; i++) {
+        runner = runner.next;
+    }
+    
+    let walker = head;
+    while (runner != null) {
+        runner = runner.next;
+        walker = walker.next;
+    }
+}
