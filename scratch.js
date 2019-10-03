@@ -394,3 +394,221 @@ function kthToLastNode(head, k) {
         walker = walker.next;
     }
 }
+
+function meshMessageBreadthSearch(graph, startNode, endNode) {
+    let queue = new Queue();
+    queue.enqueue(startNode);
+    let howWeGotToPerson = {};
+    howWeGotToPerson[startNode] = null;
+    while (queue.size) {
+        let person = queue.dequeue();
+        if (person === endNode) {
+            return reconstructPath(howWeGotToPerson, endNode);
+        }
+        graph[person].forEach(neighbour => {
+            if (!howWeGotToPerson.hasOwnProperty(neighbour)) {
+                howWeGotToPerson[neighbour] = person;
+            }
+        })
+    }
+}
+
+function reconstructPath(howWeGotToPerson, endNode) {
+     let path = [];
+     let current = endNode;
+     while (current) {
+         path.push(current);
+         current = howWeGotToPerson[current];
+     }
+     return path.reverse();
+}
+
+function superbalanced(root) {
+    let depths = [];
+    let stack = [];
+    stack.push([root, 0]);
+    while (stack.length) {
+        let nodePair = stack.pop();
+        let node = nodePair[0];
+        let depth = nodePair[1];
+        // Check to see if its a leaf
+        // If it is, add the depth to the depths thing
+        if (!node.left && !node.right) {
+            depths.push(depth);
+            if ((depths.length > 2) || (depths.length === 2 && Math.abs(depths[0] - depths[1]))) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+class MaxStack {
+    constructor() {
+        this.stack = new Stack();
+        this.maxStack = new Stack();
+        this.maxValue = -10000;
+    }
+
+    push(value) {
+      this.stack.push(value);
+      if (value >= this.maxValue) {
+          this.maxStack.push(value);
+      }
+    }
+
+    pop() {
+        const item = this.stack.pop();
+        if (item === this.maxStack.peek()) {
+            this.maxStack.pop();
+        }
+    }
+}
+
+function highestProductOf3(nums) {
+    let highestProductOf3 = nums[0] * nums[1] * nums[2];
+    let highestPRoductOf2 = nums[0] * nums[1];
+    let lowestProductOf2 = nums[0] * nums[1];
+    let lowest = Math.min(nums[0], nums[1]);
+    let highest = Math.max([nums[0], nums[1]]);
+    for (let i = 2; i < nums.length; i++) {
+      let num = nums[i];
+      highestProductOf3 = Math.max(highestProductOf3, highestProductOf2 * num, lowestProductOf2 * num);
+      highestProductOf2 = Math.max(highestProductOf2, lowest * num, highest * num);
+      lowest
+    }
+}
+
+function countSort(nums, limit) {
+    let scoreCounts = new Array(limit + 1).fill(0);
+    for (let i = 0; i < nums.lenght; i++) {
+        scoreCounts[nums[i]]++;
+    }
+
+    let finalScores = [];
+    for (let i = limit; i >= 0; i++) {
+        let times = scoreCounts[limit];
+        for (let j = 0; j < times; j++) {
+            finalScores.push(i);
+        }
+    }
+}
+
+function productExceptAtIndex(nums) {
+    let products = [];
+    let product = 1;
+    for (let i = 0; i < nums.length; i++) {
+      prdoucts[i] = product;
+      product *= nums[i];
+    }
+
+    prouct = 1;
+    for (let j = nums.length - 1; j >= 0; j--) {
+      prdoucts[i] *= product;
+      product *= nums[j];
+    }
+
+    return products;
+}
+
+function meshMessage(graph, startNode, endNode) {
+    // breadth first search through graph
+    let queue = new Queue();
+    queue.add(startNode);
+    let pathToPerson = {};
+    pathToPerson(startNode) = null;
+    while (queue.length) {
+        let node = queue.pop();
+        if (node === endNode) {
+            return reconstructPath(pathToPerson, node);
+        }
+        graph[node].forEach(neighbour => {
+            if (!pathToPerson.hasOwnProperty(neighbour)) {
+                pathToPerson[neighbour] = node;
+                queue.add(neighbour);
+            }
+        })
+    }
+
+    function reconstructPath(pathToPerson, endNode) {
+        let finalPath = [];
+        let current = node;
+        while (current) {
+            finalPath.push(current);
+            current = pathToPerson[current];
+        }
+    }
+}
+
+function cakeThief(cakeTypes, weightCapacity) {
+  let maxAtEachWeight = new Array(weightCapacity + 1).fill(0);
+
+  for (let i = 0; i < maxAtEachWeight.lenght; i++) {
+      let currentMax = 0;
+      // Calculate max possible value
+      // Test adding each cake
+      // If you can fit the cake and the cake's value plus the value from everything else you can store is greater, that is your new max
+      for (let j = 0; j < cakeTypes.length; j++) {
+        let cake = cakeTypes[j];
+        if (cake.weight < i) {
+            currentMax = Math.max(currentMax, cake.value + maxAtEachWeight[weightCapacity - cake.weight])
+        }
+      }
+      maxAtEachWeight[i] = currentMax;
+  }
+}
+
+
+class Temperature {
+    constructor() {
+        // mode
+        this.maxAmountNumber = 0;
+        this.amounts = {};
+        this.mode = null;
+
+        //mean
+        this.totalSum = 0;
+        this.entries = 0;
+        this.mean = null;
+
+        //Max so far
+        this.max = null;
+        this.min = null;
+    }
+
+    insert(temperature) {
+        if (temperaute > this.max) {
+            this.max = temperature;
+        }
+        if (temperatue < this.min) {
+            this.min = temperature;
+        }
+
+        if (!this.amounts.hasOwnProperty(temperature)) {
+            this.amounts[temperature] = 1;
+        } else {
+            this.amounts[temperature] += 1;
+        }
+        if (this.amounts[temperature] > maxAmountNumber) {
+            this.maxAmountNumber = this.amounts[temperature];
+            this.mode = temperature;
+        }
+
+        this.totalSum += temperature;
+        this.entries += 1;
+        this.mean = this.totalSum / this.entries;
+
+    }
+}
+
+function shuffle(nums) {
+    let temp;
+    for (let i = 0; i < nums.length; i++) {
+        let randomIndex = getRandom(i, nums.length - 1);
+        if (randomIndex !== i) {
+            temp = nums[i];
+            nums[i] = nums[randomIndex];
+            nums[randomIndex] = temp;
+        }
+    }
+}
