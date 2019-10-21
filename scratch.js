@@ -612,3 +612,46 @@ function shuffle(nums) {
         }
     }
 }
+
+function superbalanced(root) {
+    let node = root;
+    let depths = [];
+    let stack = [];
+    stack.push([node, 0]);
+    while (stack.length) {
+        let nodePair = stack.pop();
+        let node = nodePair[0];
+        let depth = nodePair[1];
+        if (!node.left && !node.right) {
+            if (depths.indexOf(depth) === -1) {
+                depths.push(depth);
+                if ((depths.length > 2) || depths.length === 2 && Math.abs(depths[0] - depths[1]) > 1) {
+                    return false;
+                }
+            }
+        }
+
+        stack.push([node.left, depth +1]);
+        stack.push([node.right, depth + 1]);
+    }
+    return true;
+}
+
+function sortScores(scores, highest_num) {
+    let scoreCount = new Array(highest_num + 1).fill(0);
+    for (let i = 0; i < scores.length; i++) {
+      let score = scores[i];
+      scoreCount[score] += 1;
+    }
+
+    let finalScores = [];
+
+    // Make new array that has sorted scores
+    for (let i = scoreCount.length; i >= 0; i--) {
+       let times = scoreCount[i];
+       while (times > 0) {
+           finalScores.push(scoreCount[i]);
+           times--;
+       }
+    }
+}
